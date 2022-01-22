@@ -22,7 +22,11 @@
       class="movie-details">
       <div 
         :style="{ backgroundImage: `url(${requestDiffSizeImage(theMovie.Poster)})` }"
-        class="poster"></div>
+        class="poster">
+        <Loader 
+          v-if="imageLoading"
+          absolute />
+      </div>
       <div class="specs">
         <div class="title">
           {{ theMovie.Title }}
@@ -44,7 +48,7 @@
               :title="name"
               class="rating">
               <img
-                src="../assets/logo.jpg"
+                :src="`https://raw.githubusercontent.com/wooseok0727/learn_vue/master/vue3-movie-app/src/assets/${name}.png`"
                 :alt="name" />
               <span>{{ score }}</span>
             </div>
@@ -72,19 +76,23 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Loader from '~/components/Loader'
 
 export default {
   components: {
     Loader
   },
-  computed: {
-    theMovie() {
-      return this.$store.state.movie.theMovie
-    },
-    loading() {
-      return this.$store.state.movie.loading
+  data() {
+    return {
+      imageLoading: true
     }
+  },
+  computed: {
+    ...mapState('movie', [
+      'theMovie',
+      'loading'
+    ])
   },
   created() {
     this.$store.dispatch('movie/searchMovieWithId', {
@@ -93,14 +101,22 @@ export default {
   },
   methods: {
     requestDiffSizeImage(url, size = 700) {
-      return url.replace('SX300', `SX${size}`)
+      if (!url || url === 'N/A') {
+        this.imageLoading = false
+        return ''
+      }
+      const src = url.replace('SX300', `SX${size}`)
+      this.$loadImage(src)
+        .then(() => {
+          this.imageLoading = false
+        })
+      return src
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "~/scss/main";
 $width: 500px;
 
 .container {
@@ -153,6 +169,7 @@ $width: 500px;
     background-size: cover;
     background-position: center;
     flex-shrink: 0;
+    position: relative;
   }
   .specs {
     flex-grow: 1;
@@ -198,6 +215,35 @@ $width: 500px;
       color: $black;
       font-family: "Oswald", sans-serif;
       font-size: 20px;
+    }
+  }
+
+  @include media-breakpoint-down(xl) {
+    .poster {
+      width: 300px;
+      height: calc(300px * 3 / 2);
+      margin-right: 40px;
+    }
+  }
+  @include media-breakpoint-down(lg) {
+    display: block;
+    .poster {
+      margin-bottom: 40px;
+    }
+  }
+  @include media-breakpoint-down(md) {
+    .specs {
+      .title {
+        font-size: 50px;
+      }
+      .ratings {
+        .rating-wrap {
+          display: block;
+          .rating {
+            margin-top: 10px;
+          }
+        }
+      }
     }
   }
 }

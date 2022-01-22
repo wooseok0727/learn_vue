@@ -43,7 +43,12 @@ module.exports = {
           'style-loader', // version 2.0.0 로 버전다운그레이드
           'css-loader',
           'postcss-loader',
-          'sass-loader'
+          {
+            loader: 'sass-loader',
+            options: {
+              additionalData: '@import "~/scss/main";'
+            }
+          }
         ]
       },
       {
@@ -62,7 +67,6 @@ module.exports = {
 
   // 번들링 후 결과물의 처리 방식 등 다양한 플러그인들을 설정
   plugins: [
-    new Dotenv(),
     new HtmlPlugin({
       template: './index.html',
     }),
@@ -71,7 +75,8 @@ module.exports = {
         { from: 'static' }
       ]
     }),
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    new Dotenv(),
   ],
 
   // 개발 서버 옵션
