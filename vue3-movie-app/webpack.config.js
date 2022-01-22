@@ -76,13 +76,13 @@ module.exports = {
       ]
     }),
     new VueLoaderPlugin(),
-    new Dotenv(),
+    new Dotenv()
   ],
 
   // 개발 서버 옵션
   devServer: {
     host: 'localhost',
-    port: 8080,
+    port: 8079,
     hot: true
   }
 }
