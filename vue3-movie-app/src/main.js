@@ -5,7 +5,7 @@ import store from './store'
 import loadImage from './plugins/loadImage'
 
 createApp(App)
-  .use(router)
-  .use(store)
-  .use(loadImage)
+  .use(router) // $route, $router
+  .use(store) // $store
+  .use(loadImage) // $loadImage
   .mount('#app')

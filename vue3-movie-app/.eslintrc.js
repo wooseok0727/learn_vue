@@ -34,6 +34,7 @@ module.exports = {
       'svg': 'always',
       'math': 'always'
     }],
-    'vue/multi-word-component-names': 'off'
+    'vue/multi-word-component-names': 'off',
+    'object-curly-spacing': ['error', 'always']
   }
 }
