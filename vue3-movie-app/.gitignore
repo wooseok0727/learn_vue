@@ -5,6 +5,7 @@ node_modules/
 dist/
 cypress/screenshots
 cypress/videos
+cypress/downloads
 
 # dotenv environment variables file
 .env
